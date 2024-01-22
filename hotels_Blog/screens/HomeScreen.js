@@ -119,7 +119,7 @@ const HomeScreen = ({navigation}) => {
                                 <TouchableOpacity 
                                     onPress={() => {
                                         setSideBarIsVisible(false),
-                                        navigation.navigate("HotelsScreen")
+                                        navigation.navigate("SelectCountryScreen")
                                      }}
                                     style={{marginBottom: 10}}>
                                     <Text style={{ color: '#fff', fontSize: 30 }}>HOTELS</Text>

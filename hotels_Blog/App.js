@@ -12,9 +12,13 @@ const Stack = createNativeStackNavigator();
 
 import HomeScreen from './screens/HomeScreen';
 import UserScreen from './screens/UserScreen';
-import HotelsScreen from './screens/HotelsScreen';
+import SelectCountryScreen from './screens/SelectCountryScreen';
 import QuizScreen from './screens/QuizScreen';
 import AboutAppScreen from './screens/AboutAppScreen';
+import SelectHotelsScreen from './screens/SelectHotelsScreen';
+import HotelScreen from './screens/Hotel';
+import NewSelectHotelsScreen from './screens/NewSelectHotelsScreen';
+
 
 
 const App = () => {
@@ -25,9 +29,12 @@ const App = () => {
         
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name='UserScreen' component={UserScreen} />
-        <Stack.Screen name='HotelsScreen' component={HotelsScreen} />
+        <Stack.Screen name='SelectCountryScreen' component={SelectCountryScreen} />
         <Stack.Screen name='QuizScreen' component={QuizScreen} />
         <Stack.Screen name='AboutAppScreen' component={AboutAppScreen} />
+        <Stack.Screen name='SelectHotelsScreen' component={SelectHotelsScreen} />
+        <Stack.Screen name='HotelScreen' component={HotelScreen} />
+        <Stack.Screen name='NewSelectHotelsScreen' component={NewSelectHotelsScreen} />
 
 
 
