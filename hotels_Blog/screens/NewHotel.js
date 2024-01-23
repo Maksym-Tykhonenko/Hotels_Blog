@@ -7,8 +7,9 @@ import { useWindowDimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 
-const HotelScreen = ({ navigation, route }) => {
-    const [hotels, setHotels] = useState(route.params);
+const NewHotelScreen = ({ navigation, route }) => {
+    const item = route.params;
+    const [hotels, setHotels] = useState(item);
     console.log('hotel==>', route.params)
     //console.log('route', route.params.hotels)
     const [hotelReting, setHotelReting] = useState(0);
@@ -16,7 +17,7 @@ const HotelScreen = ({ navigation, route }) => {
 
     const { height, width } = useWindowDimensions();
 
-      //console.log("Rating is: " + hotelReting);
+    //console.log("Rating is: " + hotelReting);
     const ratingCompleted = (rating) => {
         //console.log("Rating is: " + rating);
         setHotelReting(rating)
@@ -44,7 +45,7 @@ const HotelScreen = ({ navigation, route }) => {
 
                             <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: 15, marginTop: 10 }}>
                                 <Image
-                                    source={hotels.photo}
+                                    source={{uri: hotels.photo}}
                                     style={{ width: width, height: 220, borderRadius: 15 }}
                                 />
                            
@@ -66,8 +67,8 @@ const HotelScreen = ({ navigation, route }) => {
                                     <MapView
                                         style={{ height: 200, marginBottom: 50, borderRadius: 10 }}
                                         initialRegion={{
-                                            latitude: hotels.latitude,
-                                            longitude: hotels.longitude,
+                                            latitude: 52.51601653914004,
+                                            longitude: 13.379944154728385,
                                             latitudeDelta: 0.0922,
                                             longitudeDelta: 0.0421,
                                         }}
@@ -100,4 +101,4 @@ const HotelScreen = ({ navigation, route }) => {
     );
 };
 
-export default HotelScreen;
+export default NewHotelScreen;

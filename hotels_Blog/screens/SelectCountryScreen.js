@@ -32,7 +32,7 @@ const SelectCountryScreen = ({ navigation }) => {
                 <View style={{ flex: 1, position: 'relative', alignItems: 'center', justifyContent: 'center' }} >
                     
                     <SafeAreaView >
-                        <ScrollView style={{ marginTop: 20 }}>
+                        <ScrollView style={{ marginTop: 30 }}>
 
                             <TouchableOpacity
                                 onPress={() => {
@@ -154,7 +154,7 @@ const SelectCountryScreen = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('HomeScreen') }}
                         style={{ position: 'absolute', bottom: 10, right: 10 }}>
-                        <Entypo name='home' style={{ color: '#fff', fontSize: 35 }} />
+                        <Entypo name='home' style={{ color: '#feb801', fontSize: 35 }} />
                     </TouchableOpacity>
                 </View>
                

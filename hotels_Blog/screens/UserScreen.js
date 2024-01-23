@@ -192,7 +192,7 @@ const UserScreen = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => { navigation.navigate('HomeScreen') }}
                         style={{ position: 'absolute', bottom: 10, right: 10 }}>
-                        <Entypo name='home' style={{ color: '#fff', fontSize: 35 }} />
+                        <Entypo name='home' style={{ color: '#feb801', fontSize: 35 }} />
                     </TouchableOpacity>
                 </View>
                

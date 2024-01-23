@@ -18,6 +18,7 @@ import AboutAppScreen from './screens/AboutAppScreen';
 import SelectHotelsScreen from './screens/SelectHotelsScreen';
 import HotelScreen from './screens/Hotel';
 import NewSelectHotelsScreen from './screens/NewSelectHotelsScreen';
+import NewHotelScreen from './screens/NewHotel';
 
 
 
@@ -35,6 +36,7 @@ const App = () => {
         <Stack.Screen name='SelectHotelsScreen' component={SelectHotelsScreen} />
         <Stack.Screen name='HotelScreen' component={HotelScreen} />
         <Stack.Screen name='NewSelectHotelsScreen' component={NewSelectHotelsScreen} />
+        <Stack.Screen name='NewHotelScreen' component={NewHotelScreen} />
 
 
 
