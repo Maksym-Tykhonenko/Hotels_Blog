@@ -1,9 +1,12 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import {Modal, View, Text, ImageBackground, TouchableOpacity, ScrollView, SafeAreaView ,TextInput, Image} from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { uid } from "uid";
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const NewSelectHotelsScreen = ({ navigation, route }) => {
   
@@ -19,7 +22,44 @@ const NewSelectHotelsScreen = ({ navigation, route }) => {
     const [selectPhoto, setSelectPhoto] = useState(null);
 
 
-     const handleAddNewHotels = () => {
+    useEffect(() => {
+    getData();
+  }, [])
+
+  useEffect(() => {
+    setData();
+  }, [newHotelsArr])
+
+  const setData = async () => {
+    try {
+      const data = {
+        newHotelsArr,
+      }
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem("NewSelectHotelsScreen", jsonData);
+      console.log('Дані збережено в AsyncStorage')
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem('NewSelectHotelsScreen');
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setNewHotelsArr(parsedData.newHotelsArr);
+        
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
+
+
+
+    const handleAddNewHotels = () => {
         let newHotel = {
             id: uid(),
             hotel: hotel,
@@ -33,13 +73,17 @@ const NewSelectHotelsScreen = ({ navigation, route }) => {
 
         setNewHotelsArr([...newHotelsArr, newHotel]);
         console.log('newHotelsArr==>', newHotelsArr);
+       closeModal()
+    };
+
+    const closeModal = () => {
         setMadalIsVisible(false);
         setHotel('');
         setLocation('');
         setQuantityRooms('');
         setDescription('');
         setSelectPhoto(null);
-    }
+    } 
 
     const ImagePicer = () => {
         let options = {
@@ -267,7 +311,7 @@ const NewSelectHotelsScreen = ({ navigation, route }) => {
 
                             {/**BTN Modal Close */}
                             <TouchableOpacity
-                                onPress={() => { setMadalIsVisible(false) }}
+                                onPress={() => { closeModal() }}
                                 style={{ position: 'absolute', top: 10, right: 10 }}>
                                 <Text style={{ color: '#feb801', fontSize: 30, fontWeight: 'bold' }}>X</Text>
                             </TouchableOpacity>
@@ -289,7 +333,7 @@ const NewSelectHotelsScreen = ({ navigation, route }) => {
                     <TouchableOpacity
                         onPress={() => { navigation.goBack() }}
                         style={{ position: 'absolute', bottom: 10, right: 10 }}>
-                        <Entypo name='reply' style={{ color: '#fff', fontSize: 40 }} />
+                        <Entypo name='reply' style={{ color: '#feb801', fontSize: 40 }} />
                     </TouchableOpacity>
                 </View>
                

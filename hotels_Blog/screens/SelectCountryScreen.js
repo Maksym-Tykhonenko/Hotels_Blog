@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, TouchableOpacity, ScrollView, SafeAreaView, Modal, TextInput } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -6,6 +6,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { germanHotels } from "../data/germanHotels";
 import { franceHotels } from "../data/franceHotels";
 import { uid } from "uid";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SelectCountryScreen = ({ navigation }) => {
 
@@ -14,7 +16,42 @@ const SelectCountryScreen = ({ navigation }) => {
     const [madalIsVisible, setMadalIsVisible] = useState(false);
     const [countryName, setCountryName] = useState('');
     const [country, setCountry] = useState([]);
-    console.log('country==>', country)
+    console.log('country==>', country);
+
+    useEffect(() => {
+    getData();
+  }, [])
+
+  useEffect(() => {
+    setData();
+  }, [country])
+
+  const setData = async () => {
+    try {
+      const data = {
+        country,
+      }
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem("SelectCountryScreen", jsonData);
+      console.log('Дані збережено в AsyncStorage')
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem('SelectCountryScreen');
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setCountry(parsedData.country);
+        
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
 
     const handleAddCountry = () => {
         setCountry([...country, countryName])
@@ -22,7 +59,7 @@ const SelectCountryScreen = ({ navigation }) => {
         setMadalIsVisible(false);
         setCountryName("");
 
-    }
+    };
     
     return (
         <View style={{ flex: 1 }}>
@@ -135,7 +172,10 @@ const SelectCountryScreen = ({ navigation }) => {
 
                             {/**BTN Modal Close */}
                             <TouchableOpacity
-                                onPress={() => { setMadalIsVisible(false) }}
+                                onPress={() => {
+                                    setMadalIsVisible(false)
+                                    setCountryName("")
+                                }}
                                 style={{ position: 'absolute', top: 10, right: 10 }}>
                                 <Text style={{ color: '#feb801', fontSize: 30, fontWeight: 'bold' }}>X</Text>
                             </TouchableOpacity>
@@ -147,7 +187,7 @@ const SelectCountryScreen = ({ navigation }) => {
 
                     <TouchableOpacity
                         onPress={() => { setMadalIsVisible(true) }}
-                        style={{ position: 'absolute', top: 20, right: 10, width: 40, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)', borderColor: '#feb801', borderWidth: 1, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                        style={{ position: 'absolute', top: 30, right: 10, width: 40, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)', borderColor: '#feb801', borderWidth: 1, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
                         <MaterialIcons name='add' style={{ color: '#feb801', fontSize: 35 }} />
                     </TouchableOpacity>
 

@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import {Modal, View, Text, ImageBackground, TouchableOpacity, ScrollView, SafeAreaView ,TextInput, Image} from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { uid } from "uid";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SelectHotelsScreen = ({ navigation, route }) => {
     const [hotels, setHotels] = useState(route.params.hotels);
@@ -17,6 +19,41 @@ const SelectHotelsScreen = ({ navigation, route }) => {
     const [quantityRooms, setQuantityRooms] = useState('');
     const [description, setDescription] = useState('');
     const [selectPhoto, setSelectPhoto] = useState(null);
+
+    useEffect(() => {
+    getData();
+  }, [])
+
+  useEffect(() => {
+    setData();
+  }, [newHotelsArr])
+
+  const setData = async () => {
+    try {
+      const data = {
+        newHotelsArr,
+      }
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem("SelectHotelsScreen", jsonData);
+      console.log('Дані збережено в AsyncStorage')
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem('SelectHotelsScreen');
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setNewHotelsArr(parsedData.newHotelsArr);
+        
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
 
     const handleAddNewHotels = () => {
         let newHotel = {
@@ -32,13 +69,17 @@ const SelectHotelsScreen = ({ navigation, route }) => {
 
         setNewHotelsArr([...newHotelsArr, newHotel]);
         console.log('newHotelsArr==>', newHotelsArr);
+        closeModal()
+    };
+
+    const closeModal = () => {
         setMadalIsVisible(false);
         setHotel('');
         setLocation('');
         setQuantityRooms('');
         setDescription('');
         setSelectPhoto(null);
-    }
+    };
 
     const ImagePicer = () => {
         let options = {
@@ -279,7 +320,7 @@ const SelectHotelsScreen = ({ navigation, route }) => {
 
                             {/**BTN Modal Close */}
                             <TouchableOpacity
-                                onPress={() => { setMadalIsVisible(false) }}
+                                onPress={() => { closeModal() }}
                                 style={{ position: 'absolute', top: 10, right: 10 }}>
                                 <Text style={{ color: '#feb801', fontSize: 30, fontWeight: 'bold' }}>X</Text>
                             </TouchableOpacity>
@@ -292,7 +333,7 @@ const SelectHotelsScreen = ({ navigation, route }) => {
 
                     <TouchableOpacity
                         onPress={() => { setMadalIsVisible(true) }}
-                        style={{ position: 'absolute', top: 20, right: 10, width: 40, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)', borderColor: '#feb801', borderWidth: 1, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                        style={{ position: 'absolute', top: 30, right: 10, width: 40, height: 40, backgroundColor: 'rgba(255, 255, 255, 0.5)', borderColor: '#feb801', borderWidth: 1, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
                         <MaterialIcons name='add' style={{ color: '#feb801', fontSize: 35 }} />
                     </TouchableOpacity>
 

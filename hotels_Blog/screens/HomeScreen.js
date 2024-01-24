@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
                     {/**BTN SideBar Open */}
                     <TouchableOpacity
                         onPress={() => { setSideBarIsVisible(true) }}
-                        style={{ position: 'absolute', top: 20, left: 10 }}>
+                        style={{ position: 'absolute', top: 25, left: 10, width: 45, height:45}}>
                         <AntDesign name='bars' style={{color: '#fff', fontSize: 35}} />
                     </TouchableOpacity>
                     

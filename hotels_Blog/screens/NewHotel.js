@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, ImageBackground, TouchableOpacity, ScrollView, SafeAreaView, Image } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -6,6 +6,7 @@ import { uid } from "uid";
 import { useWindowDimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewHotelScreen = ({ navigation, route }) => {
     const item = route.params;
@@ -16,6 +17,41 @@ const NewHotelScreen = ({ navigation, route }) => {
     console.log('hotelReting==>', hotelReting)
 
     const { height, width } = useWindowDimensions();
+
+     useEffect(() => {
+    getData();
+  }, [])
+
+  useEffect(() => {
+    setData();
+  }, [hotelReting])
+
+  const setData = async () => {
+    try {
+      const data = {
+        hotelReting,
+      }
+      const jsonData = JSON.stringify(data);
+      await AsyncStorage.setItem(`NewHotelScreen${hotels.hotel}`, jsonData);
+      console.log('Дані збережено в AsyncStorage')
+    } catch (e) {
+      console.log('Помилка збереження даних:', e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonData = await AsyncStorage.getItem(`NewHotelScreen${hotels.hotel}`);
+      if (jsonData !== null) {
+        const parsedData = JSON.parse(jsonData);
+        console.log('parsedData==>', parsedData);
+        setHotelReting(parsedData.hotelReting);
+        
+      }
+    } catch (e) {
+      console.log('Помилка отримання даних:', e);
+    }
+  };
 
     //console.log("Rating is: " + hotelReting);
     const ratingCompleted = (rating) => {
